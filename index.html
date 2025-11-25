@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>טוען שעה...</title>
+<title>שעון</title>
 
 <style>
 body {
@@ -25,21 +25,17 @@ h1 {
   white-space: nowrap;
   font-weight: bold;
   text-align: center;
-  font-size: clamp(1.5rem, 6vw, 3rem);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
 }
 
 .clock {
-  --size: min(70vw, 70vh);
-  width: var(--size);
-  height: var(--size);
+  width: min(500px, 70vmin);
+  height: min(500px, 70vmin);
   position: relative;
   border-radius: 50%;
   background: radial-gradient(circle at center, #111827, #000);
   border: 5px solid #00ffd0;
   box-shadow: 0 0 25px #00ffd0, inset 0 0 15px #00ffd0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .center-dot {
@@ -48,60 +44,110 @@ h1 {
   background: #00ffd0;
   border-radius: 50%;
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   box-shadow: 0 0 15px #00ffd0;
   z-index: 150;
 }
 
 .hand {
   position: absolute;
-  top: 50%;
+  bottom: 50%;
   left: 50%;
-  transform-origin: 50% 100%;
+  transform-origin: bottom center;
   border-radius: 10px;
-  transition: transform 0.3s cubic-bezier(0.4, 2.2, 0.4, 1);
   z-index: 50;
 }
-.hour-hand { width: calc(var(--size) * 0.03); height: calc(var(--size) * 0.25); background: #00ffd0; box-shadow: 0 0 10px #00ffd0; margin-top: calc(var(--size) * -0.25); }
-.minute-hand { width: calc(var(--size) * 0.02); height: calc(var(--size) * 0.35); background: #00ffd0; box-shadow: 0 0 10px #00ffd0; margin-top: calc(var(--size) * -0.35); }
-.second-hand { width: calc(var(--size) * 0.01); height: calc(var(--size) * 0.42); background: #ff0077; box-shadow: 0 0 15px #ff0077; margin-top: calc(var(--size) * -0.42); }
+
+.hour-hand { 
+  width: 8px; 
+  height: 30%; 
+  background: #00ffd0; 
+  box-shadow: 0 0 10px #00ffd0; 
+  margin-left: -4px;
+}
+
+.minute-hand { 
+  width: 6px; 
+  height: 40%; 
+  background: #00ffd0; 
+  box-shadow: 0 0 10px #00ffd0; 
+  margin-left: -3px;
+}
+
+.second-hand { 
+  width: 3px; 
+  height: 45%; 
+  background: #ff0077; 
+  box-shadow: 0 0 15px #ff0077; 
+  margin-left: -1.5px;
+}
 
 .number {
   position: absolute;
   color: #ffffff;
-  font-size: calc(var(--size) * 0.1);
+  font-size: 2rem;
   font-weight: bold;
-  text-shadow: 0 0 20px #00ffd0, 0 0 30px #00ffd0, 0 2px 4px rgba(0,0,0,0.8);
-  transform: translate(-50%, -50%);
-  z-index: 100;
+  text-shadow: 0 0 20px #00ffd0, 0 0 30px #00ffd0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tick {
   position: absolute;
   top: 0;
   left: 50%;
-  transform-origin: 50% calc(var(--size) / 2);
-  background: #00ffd0;
-  box-shadow: 0 0 10px #00ffd0;
+  height: 50%;
+  transform-origin: bottom center;
   z-index: 1;
 }
 
-.tick.minute { width: calc(var(--size) * 0.003); height: calc(var(--size) * 0.08); opacity: 0.4; margin-left: calc(var(--size) * -0.0015); }
-.tick.hour   { width: calc(var(--size) * 0.008); height: calc(var(--size) * 0.15); opacity: 0.9; margin-left: calc(var(--size) * -0.004); }
+.tick.minute { 
+  width: 2px; 
+  opacity: 0.4; 
+  margin-left: -1px;
+}
+
+.tick.minute::before {
+  content: '';
+  display: block;
+  width: 2px;
+  height: 8%;
+  background: #00ffd0;
+  box-shadow: 0 0 5px #00ffd0;
+}
+
+.tick.hour { 
+  width: 4px; 
+  opacity: 0.9; 
+  margin-left: -2px;
+}
+
+.tick.hour::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 15%;
+  background: #00ffd0;
+  box-shadow: 0 0 10px #00ffd0;
+}
 
 .digital-clock {
   color: #00ffd0;
-  font-size: min(12vw, 5rem);
+  font-size: clamp(2rem, 8vw, 4rem);
   font-weight: bold;
   letter-spacing: 0.15em;
-  text-shadow: 0 0 30px #00ffd0, 0 0 50px #00ffd0, 0 0 70px #00ffd0;
+  text-shadow: 0 0 30px #00ffd0, 0 0 50px #00ffd0;
   margin-top: 5vh;
   background: rgba(0, 255, 208, 0.1);
   padding: 1rem 2rem;
   border-radius: 15px;
   border: 2px solid #00ffd0;
 }
-
-@media (max-width: 400px) { .digital-clock { font-size: 10vw; } }
 </style>
 </head>
 <body>
@@ -124,7 +170,7 @@ const secondHand = document.querySelector('.second-hand');
 const digital = document.getElementById('digital');
 const clock = document.getElementById('clock');
 
-// ===== סימוני דקות (60) =====
+// סימוני דקות (60)
 for (let i = 0; i < 60; i++) {
   const tick = document.createElement('div');
   tick.className = 'tick minute';
@@ -132,7 +178,7 @@ for (let i = 0; i < 60; i++) {
   clock.appendChild(tick);
 }
 
-// ===== סימוני שעות (12) =====
+// סימוני שעות (12)
 for (let i = 0; i < 12; i++) {
   const tick = document.createElement('div');
   tick.className = 'tick hour';
@@ -140,49 +186,43 @@ for (let i = 0; i < 12; i++) {
   clock.appendChild(tick);
 }
 
-// ===== ספרות =====
+// ספרות
+const clockSize = clock.offsetWidth;
+const radius = clockSize * 0.38;
+
 for (let i = 1; i <= 12; i++) {
   const num = document.createElement('div');
   num.className = 'number';
   num.textContent = i;
-  const angle = (i / 12) * 2 * Math.PI;
-  const radius = 40;
-  num.style.top = `${50 - radius * Math.cos(angle)}%`;
-  num.style.left = `${50 + radius * Math.sin(angle)}%`;
+  const angle = (i - 3) * 30 * Math.PI / 180;
+  const x = clockSize / 2 + radius * Math.cos(angle);
+  const y = clockSize / 2 + radius * Math.sin(angle);
+  num.style.left = `${x}px`;
+  num.style.top = `${y}px`;
+  num.style.transform = 'translate(-50%, -50%)';
   clock.appendChild(num);
 }
 
-// ===== עדכון השעון =====
-let lastSecondDeg = 0;
-
+// עדכון השעון
 function updateClock() {
   const now = new Date();
   const seconds = now.getSeconds() + now.getMilliseconds()/1000;
   const minutes = now.getMinutes() + seconds/60;
   const hours = now.getHours() + minutes/60;
 
-  let secondDeg = seconds*6;
-  const minuteDeg = minutes*6;
-  const hourDeg = (hours%12)*30;
+  const secondDeg = seconds * 6;
+  const minuteDeg = minutes * 6;
+  const hourDeg = (hours % 12) * 30;
 
-  // מונע קפיצה לאחור של מחוג השניות
-  if (secondDeg < lastSecondDeg - 180) {
-    secondDeg += 360;
-  }
-  lastSecondDeg = secondDeg;
+  secondHand.style.transform = `rotate(${secondDeg}deg)`;
+  minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+  hourHand.style.transform = `rotate(${hourDeg}deg)`;
 
-  secondHand.style.transition = secondDeg % 360 < 6 ? 'none' : 'transform 0.1s linear';
-  secondHand.style.transform = `translate(-50%, 0) rotate(${secondDeg}deg)`;
-  minuteHand.style.transform = `translate(-50%, 0) rotate(${minuteDeg}deg)`;
-  hourHand.style.transform = `translate(-50%, 0) rotate(${hourDeg}deg)`;
+  const h = String(Math.floor(hours)).padStart(2,'0');
+  const m = String(Math.floor(minutes % 60)).padStart(2,'0');
+  const s = String(Math.floor(seconds % 60)).padStart(2,'0');
 
-  const h = Math.floor(hours);
-  const m = Math.floor(minutes%60);
-  const s = Math.floor(seconds%60);
-
-  const formatted = String(h).padStart(2,'0') + ':' +
-                    String(m).padStart(2,'0') + ':' +
-                    String(s).padStart(2,'0');
+  const formatted = `${h}:${m}:${s}`;
   digital.textContent = formatted;
   document.title = formatted;
 }
